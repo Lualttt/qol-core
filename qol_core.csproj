@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <AssemblyName>crabgame_mod_template</AssemblyName>
-    <Description>a crabgame mod template made by lualt</Description>
+    <AssemblyName>qol-core</AssemblyName>
+    <Description>Quality Of Life Core</Description>
     <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
-    <BepInExDirectory>C:\Program Files\Steam\steamapps\common\Crab Game\BepInEx</BepInExDirectory>
+    <BepInExDirectory>/media/lualt/2TB/SteamLibrary/steamapps/common/Crab Game/BepInEx</BepInExDirectory>
   </PropertyGroup>
 
   <ItemGroup>
