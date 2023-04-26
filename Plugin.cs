@@ -27,7 +27,7 @@ namespace qol_core
         [HarmonyPrefix]
         public static bool ChatMessage(ChatBox __instance, string __0)
         {
-            if (__0.StartsWith("/")) return true;
+            if (!__0.StartsWith("/")) return true;
 
             List<string> arguments = __0.ToLower().Substring(1).Split(" ").ToList();
 
