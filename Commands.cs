@@ -1,8 +1,4 @@
-using BepInEx;
-using BepInEx.IL2CPP;
-using HarmonyLib;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace qol_core
@@ -23,28 +19,28 @@ namespace qol_core
         }
     }
 
-    public class RegisterCommands
+    public class Commands
     {
-        public static Dictionary<string, Command> Commands = new Dictionary<string, Command>();
+        public static Dictionary<string, Command> CommandsList = new Dictionary<string, Command>();
 
         public static void RegisterCommand(string name, string syntax, string description, Func<List<string>, bool> callback)
         {
-            Commands.Add(name, new Command(name, syntax, description, callback));
+            CommandsList.Add(name, new Command(name, syntax, description, callback));
         }
 
-        public static void Unregister(string name)
+        public static void UnregisterMod(string name)
         {
-            Commands.Remove(name);
+            CommandsList.Remove(name);
         }
 
         public static bool CommandExists(string name)
         {
-            return Commands.ContainsKey(name);
+            return CommandsList.ContainsKey(name);
         }
 
         public static Command GetCommand(string name)
         {
-            return Commands[name];
+            return CommandsList[name];
         }
     }
 }

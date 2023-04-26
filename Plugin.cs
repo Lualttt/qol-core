@@ -14,7 +14,11 @@ namespace qol_core
         {
             Harmony.CreateAndPatchAll(typeof(Plugin));
 
-            RegisterCommands.RegisterCommand("help", "/help (index|command)", "Shows a list of commands.", HelpCommand);
+            Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "Quality Of Life Core");
+
+            Commands.RegisterCommand("help", "/help (index|command)", "Shows a list of commands.", HelpCommand);
+            Commands.RegisterCommand("mods", "/mods (index|mod)", "Shows a list of qol mods.", ModsCommand);
+            Commands.RegisterCommand("plugins", "/plugins (index|plugins)", "Show a list of qol plugins.", ModsCommand);
 
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
@@ -27,13 +31,13 @@ namespace qol_core
 
             List<string> arguments = __0.Substring(1).Split(" ").ToList();
 
-            if (!RegisterCommands.CommandExists(arguments[0])) {
+            if (!Commands.CommandExists(arguments[0])) {
                 SendMessage($"command \"{arguments[0]}\" doesn't exist");
 
                 return false;
             }
 
-            Command command = RegisterCommands.GetCommand(arguments[0]);
+            Command command = Commands.GetCommand(arguments[0]);
             bool succesfull = command.Callback(arguments);
 
             if (!succesfull)
@@ -50,7 +54,7 @@ namespace qol_core
         public static bool HelpCommand(List<string> arguments)
         {
             int listIndex = 1;
-            int maxIndex = (((RegisterCommands.Commands.Count / 4) + 1) * 4) / 4;
+            int maxIndex = (((Commands.CommandsList.Count / 4) + 1) * 4) / 4;
 
             if (arguments.Count > 1) {
                 try
@@ -58,14 +62,14 @@ namespace qol_core
                     listIndex = Math.Clamp(Int32.Parse(arguments[1]), 1, maxIndex);
                 } catch (FormatException)
                 {
-                    if (!RegisterCommands.CommandExists(arguments[1]))
+                    if (!Commands.CommandExists(arguments[1]))
                     {
                         SendMessage($"argument \"{arguments[1]}\" needs to be a number or command");
                         return true;
                     }
 
                     SendMessage($"-=+# Help ({arguments[1]}) #+=-");
-                    Command command = RegisterCommands.GetCommand(arguments[1]);
+                    Command command = Commands.GetCommand(arguments[1]);
                     SendMessage(command.Syntax);
                     SendMessage(command.Description);
 
@@ -77,8 +81,45 @@ namespace qol_core
 
             for (int i = (listIndex * 4)-4; i < listIndex * 4; i++)
             {
-                Command command = RegisterCommands.Commands.Values.ToList()[i];
+                Command command = Commands.CommandsList.Values.ToList()[i];
                 SendMessage($"{command.Name}: {command.Description}");
+            }
+
+            return true;
+        }
+
+        public static bool ModsCommand(List<string> arguments)
+        {
+            int listIndex = 1;
+            int maxIndex = (((Mods.ModList.Count / 4) + 1) * 4) / 4;
+
+            if (arguments.Count > 1) {
+                try
+                {
+                    listIndex = Math.Clamp(Int32.Parse(arguments[1]), 1, maxIndex);
+                } catch (FormatException)
+                {
+                    if (!Mods.ModExists(arguments[1]))
+                    {
+                        SendMessage($"argument \"{arguments[1]}\" needs to be a number or command");
+                        return true;
+                    }
+
+                    SendMessage($"-=+# Mods ({arguments[1]}) #+=-");
+                    Mod mod = Mods.GetMod(arguments[1]);
+                    SendMessage($"{mod.Name} ({mod.Version})");
+                    SendMessage(mod.Description);
+
+                    return true;
+                }
+            }
+
+            SendMessage($"-=+# Mods ({listIndex}/{maxIndex}) #+=-");
+
+            for (int i = (listIndex * 4)-4; i < listIndex * 4; i++)
+            {
+                Mod mod = Mods.ModList.Values.ToList()[i];
+                SendMessage($"{mod.Name} ({mod.Version})");
             }
 
             return true;
