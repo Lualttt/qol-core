@@ -16,6 +16,10 @@ public override void Load()
 }
 ```
 
+```cs
+qol_core.Plugin.SendMessage("Hello, world!");
+```
+
 Mods
 ```cs
 Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "Description");
