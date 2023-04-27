@@ -1,7 +1,3 @@
-# Quality Of Life Core
-
-Example.cs
-```cs
 using BepInEx;
 using BepInEx.IL2CPP;
 using HarmonyLib;
@@ -34,26 +30,3 @@ namespace example
         }
     }
 }
-```
-
-Message
-```cs
-qol_core.Plugin.SendMessage("Hello, world!", modInstance);
-```
-
-Mods
-```cs
-Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "Description");
-Mods.UnregisterMod(PluginInfo.PLUGIN_NAME);
-Mods.ModExists("mod-name");
-Mods.GetMod("mod-name");
-```
-
-Commands
-```cs
-Commands.RegisterCommand("command-name", "/command-name (optional|optional2) [required|required2]", "description of the command", modInstance, Callback);
-Commands.UnregisterCommand("mod-name:command-name");
-Commands.CommandExists("mod-name:command-name");
-Commands.GetCommand("mod-name:command-name");
-Commands.FindName("command-name");
-```
