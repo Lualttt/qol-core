@@ -12,6 +12,7 @@ namespace qol_core
     public class Plugin : BasePlugin
     {
         static Plugin instance;
+        static Mod modInstance;
 
         ConfigEntry<string> commandPrefix;
 
@@ -28,7 +29,7 @@ namespace qol_core
                 "The prefix used for commands example \"/help\""
                 );
 
-            Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "Quality Of Life Core");
+            modInstance = Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "Quality Of Life Core");
 
             Commands.RegisterCommand("help", "help (index|command)", "Shows a list of commands.", HelpCommand);
             Commands.RegisterCommand("mods", "mods (index|mod)", "Shows a list of qol mods.", ModsCommand);
@@ -47,7 +48,7 @@ namespace qol_core
             List<string> arguments = __0.Substring(1).Split(" ").ToList();
 
             if (!Commands.CommandExists(arguments[0].ToLower())) {
-                SendMessage($"command \"{arguments[0]}\" doesn't exist");
+                SendMessage($"command \"{arguments[0]}\" doesn't exist", modInstance);
 
                 return false;
             }
@@ -56,14 +57,14 @@ namespace qol_core
             bool succesfull = command.Callback(arguments);
 
             if (!succesfull)
-                SendMessage($"something went wrong running \"{arguments[0]}\"");
+                SendMessage($"something went wrong running \"{arguments[0]}\"", modInstance);
 
             return false;
         }
 
-        public static void SendMessage(string message)
+        public static void SendMessage(string message, Mod mod)
         {
-            ChatBox.Instance.AppendMessage(SteamManager.Instance.field_Private_CSteamID_0.m_SteamID, message, SteamManager.Instance.field_Private_String_0);
+            ChatBox.Instance.AppendMessage(SteamManager.Instance.field_Private_CSteamID_0.m_SteamID, message, mod.Name);
         }
 
         public static bool HelpCommand(List<string> arguments)
@@ -79,25 +80,25 @@ namespace qol_core
                 {
                     if (!Commands.CommandExists(arguments[1]))
                     {
-                        SendMessage($"argument \"{arguments[1]}\" needs to be a number or command");
+                        SendMessage($"argument \"{arguments[1]}\" needs to be a number or command", modInstance);
                         return true;
                     }
 
-                    SendMessage($"-=+# Help ({arguments[1]}) #+=-");
+                    SendMessage($"-=+# Help ({arguments[1]}) #+=-", modInstance);
                     Command command = Commands.GetCommand(arguments[1]);
-                    SendMessage(instance.commandPrefix.Value + command.Syntax);
-                    SendMessage(command.Description);
+                    SendMessage(instance.commandPrefix.Value + command.Syntax, modInstance);
+                    SendMessage(command.Description, modInstance);
 
                     return true;
                 }
             }
 
-            SendMessage($"-=+# Help ({listIndex}/{maxIndex}) #+=-");
+            SendMessage($"-=+# Help ({listIndex}/{maxIndex}) #+=-", modInstance);
 
             for (int i = (listIndex * 4)-4; i < listIndex * 4; i++)
             {
                 Command command = Commands.CommandsList.Values.ToList()[i];
-                SendMessage($"{command.Name}: {command.Description}");
+                SendMessage($"{command.Name}: {command.Description}", modInstance);
             }
 
             return true;
@@ -116,25 +117,25 @@ namespace qol_core
                 {
                     if (!Mods.ModExists(arguments[1]))
                     {
-                        SendMessage($"argument \"{arguments[1]}\" needs to be a number or command");
+                        SendMessage($"argument \"{arguments[1]}\" needs to be a number or command", modInstance);
                         return true;
                     }
 
-                    SendMessage($"-=+# Mods ({arguments[1]}) #+=-");
+                    SendMessage($"-=+# Mods ({arguments[1]}) #+=-", modInstance);
                     Mod mod = Mods.GetMod(arguments[1]);
-                    SendMessage($"{mod.Name} ({mod.Version})");
-                    SendMessage(mod.Description);
+                    SendMessage($"{mod.Name} ({mod.Version})", modInstance);
+                    SendMessage(mod.Description, modInstance);
 
                     return true;
                 }
             }
 
-            SendMessage($"-=+# Mods ({listIndex}/{maxIndex}) #+=-");
+            SendMessage($"-=+# Mods ({listIndex}/{maxIndex}) #+=-", modInstance);
 
             for (int i = (listIndex * 4)-4; i < listIndex * 4; i++)
             {
                 Mod mod = Mods.ModList.Values.ToList()[i];
-                SendMessage($"{mod.Name} ({mod.Version})");
+                SendMessage($"{mod.Name} ({mod.Version})", modInstance);
             }
 
             return true;
@@ -144,12 +145,12 @@ namespace qol_core
         {
             if (arguments.Count == 1)
             {
-                SendMessage($"current prefix \"{instance.commandPrefix.Value}\"");
+                SendMessage($"current prefix \"{instance.commandPrefix.Value}\"", modInstance);
             } else
             {
                 instance.commandPrefix.Value = arguments[1];
                 instance.Config.Save();
-                SendMessage($"current prefix \"{instance.commandPrefix.Value}\"");
+                SendMessage($"current prefix \"{instance.commandPrefix.Value}\"", modInstance);
             }
 
             return true;

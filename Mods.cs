@@ -20,9 +20,11 @@ namespace qol_core
     {
         public static Dictionary<string, Mod> ModList = new Dictionary<string, Mod>();
 
-        public static void RegisterMod(string name, string version, string description)
+        public static Mod RegisterMod(string name, string version, string description)
         {
-            ModList.Add(name, new Mod(name, version, description));
+            Mod mod = new Mod(name, version, description);
+            ModList.Add(name, mod);
+            return mod;
         }
 
         public static void UnregisterMod(string name)
