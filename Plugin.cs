@@ -70,7 +70,7 @@ namespace qol_core
         public static bool HelpCommand(List<string> arguments)
         {
             int listIndex = 1;
-            int maxIndex = (((Commands.CommandsList.Count / 4) + 1) * 4) / 4;
+            int maxIndex = (((Commands.CommandsList.Count / 5) + 1) * 5) / 5;
 
             if (arguments.Count > 1) {
                 try
@@ -107,7 +107,7 @@ namespace qol_core
         public static bool ModsCommand(List<string> arguments)
         {
             int listIndex = 1;
-            int maxIndex = (((Mods.ModList.Count / 4) + 1) * 4) / 4;
+            int maxIndex = (((Mods.ModList.Count / 5) + 1) * 5) / 5;
 
             if (arguments.Count > 1) {
                 try
