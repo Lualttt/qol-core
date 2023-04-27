@@ -31,10 +31,10 @@ namespace qol_core
 
             modInstance = Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "Quality Of Life Core");
 
-            Commands.RegisterCommand("help", "help (index|command)", "Shows a list of commands.", HelpCommand);
-            Commands.RegisterCommand("mods", "mods (index|mod)", "Shows a list of qol mods.", ModsCommand);
-            Commands.RegisterCommand("plugins", "plugins (index|plugins)", "Show a list of qol plugins.", ModsCommand);
-            Commands.RegisterCommand("prefix", "prefix (prefix)", "Change the prefix of all commands", PrefixCommand);
+            Commands.RegisterCommand("help", "help (index|command)", "Shows a list of commands.", modInstance, HelpCommand);
+            Commands.RegisterCommand("mods", "mods (index|mod)", "Shows a list of qol mods.", modInstance, ModsCommand);
+            Commands.RegisterCommand("plugins", "plugins (index|plugins)", "Show a list of qol plugins.", modInstance, ModsCommand);
+            Commands.RegisterCommand("prefix", "prefix (prefix)", "Change the prefix of all commands", modInstance, PrefixCommand);
 
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
@@ -46,6 +46,11 @@ namespace qol_core
             if (!__0.StartsWith(instance.commandPrefix.Value)) return true;
 
             List<string> arguments = __0.Substring(1).Split(" ").ToList();
+
+            if (!arguments[0].Contains(":"))
+            {
+                arguments[0] = Commands.FindName(arguments[0]);
+            }
 
             if (!Commands.CommandExists(arguments[0].ToLower())) {
                 SendMessage($"command \"{arguments[0]}\" doesn't exist", modInstance);
@@ -98,7 +103,7 @@ namespace qol_core
             for (int i = (listIndex * 4)-4; i < listIndex * 4; i++)
             {
                 Command command = Commands.CommandsList.Values.ToList()[i];
-                SendMessage($"{command.Name}: {command.Description}", modInstance);
+                SendMessage($"{command.Name}: {command.Description}", command.ModInstance);
             }
 
             return true;

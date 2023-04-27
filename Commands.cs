@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace qol_core
 {
@@ -8,13 +9,15 @@ namespace qol_core
         public string Name { get; }
         public string Syntax { get; }
         public string Description { get; }
+        public Mod ModInstance { get; }
         public Func<List<string>, bool> Callback { get; }
 
-        public Command(string name, string syntax, string description, Func<List<string>, bool> callback)
+        public Command(string name, string syntax, string description, Mod modInstance, Func<List<string>, bool> callback)
         {
             Name = name;
             Syntax = syntax;
             Description = description;
+            ModInstance = modInstance;
             Callback = callback;
         }
     }
@@ -23,9 +26,9 @@ namespace qol_core
     {
         public static Dictionary<string, Command> CommandsList = new Dictionary<string, Command>();
 
-        public static void RegisterCommand(string name, string syntax, string description, Func<List<string>, bool> callback)
+        public static void RegisterCommand(string name, string syntax, string description, Mod mod, Func<List<string>, bool> callback)
         {
-            CommandsList.Add(name, new Command(name, syntax, description, callback));
+            CommandsList.Add($"{mod.Name}:{name}".ToLower(), new Command(name, syntax, description, mod, callback));
         }
 
         public static void UnregisterMod(string name)
@@ -41,6 +44,19 @@ namespace qol_core
         public static Command GetCommand(string name)
         {
             return CommandsList[name];
+        }
+
+        public static string FindName(string name)
+        {
+            foreach(string key in CommandsList.Keys)
+            {
+                string modName = key.Split(":").Last();
+                if (modName == name)
+                {
+                    return key;
+                }
+            }
+            return "";
         }
     }
 }
