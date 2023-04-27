@@ -30,10 +30,10 @@ namespace qol_core
 
             Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "Quality Of Life Core");
 
-            Commands.RegisterCommand("help", "/help (index|command)", "Shows a list of commands.", HelpCommand);
-            Commands.RegisterCommand("mods", "/mods (index|mod)", "Shows a list of qol mods.", ModsCommand);
-            Commands.RegisterCommand("plugins", "/plugins (index|plugins)", "Show a list of qol plugins.", ModsCommand);
-            Commands.RegisterCommand("prefix", "/prefix (prefix)", "Change the prefix of all commands", PrefixCommand);
+            Commands.RegisterCommand("help", "help (index|command)", "Shows a list of commands.", HelpCommand);
+            Commands.RegisterCommand("mods", "mods (index|mod)", "Shows a list of qol mods.", ModsCommand);
+            Commands.RegisterCommand("plugins", "plugins (index|plugins)", "Show a list of qol plugins.", ModsCommand);
+            Commands.RegisterCommand("prefix", "prefix (prefix)", "Change the prefix of all commands", PrefixCommand);
 
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
@@ -85,7 +85,7 @@ namespace qol_core
 
                     SendMessage($"-=+# Help ({arguments[1]}) #+=-");
                     Command command = Commands.GetCommand(arguments[1]);
-                    SendMessage(command.Syntax);
+                    SendMessage(instance.commandPrefix.Value + command.Syntax);
                     SendMessage(command.Description);
 
                     return true;
