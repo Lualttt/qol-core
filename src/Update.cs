@@ -20,7 +20,7 @@ namespace qol_core
         {
             if (arguments.Count == 1)
             {
-                Plugin.SendMessage("Wrong syntax use either; /update silence", Plugin.modInstance);
+                Plugin.SendMessage("Wrong syntax use either; /update [silence|restart]", Plugin.modInstance);
                 Plugin.SendMessage("or; /update install [mod|all]", Plugin.modInstance);
 
                 return true;
