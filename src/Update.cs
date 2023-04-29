@@ -13,9 +13,7 @@ namespace qol_core
 {
     public class Update
     {
-        // TODO: replace these bools with a config so they persist
         public static bool silenced = false;
-        public static bool restart = false;
         public static List<Tuple<Mod, string>> outdatedMods;
 
         public static bool UpdateCommand(List<string> arguments)
@@ -33,15 +31,9 @@ namespace qol_core
             if (arguments[1].ToLower() == "install")
                 updateMod(arguments[2]);
             if (arguments[1].ToLower() == "restart")
-                toggleRestart();
+                restartGame();
 
             return true;
-        }
-
-        public static void toggleRestart(){
-            restart = !restart;
-
-            Plugin.SendMessage(restart ? "auto-restart enabled." : "auto-restart disabled.", Plugin.modInstance);
         }
 
         public static void toggleSilence()
@@ -61,10 +53,8 @@ namespace qol_core
         {
             if (modName.ToLower() == "all")
             {
-                bool anyModsUpdated = false;
                 foreach(Tuple<Mod, string> mod in outdatedMods)
                 {
-                    anyModsUpdated = true;
                     using (var client = new WebClient())
                     {
                         DirectoryInfo directory = new DirectoryInfo("BepInEx/plugins");
@@ -76,8 +66,7 @@ namespace qol_core
                         client.DownloadFileAsync(new Uri($"https://github.com/{mod.Item1.Github}/releases/download/{mod.Item2}/{mod.Item1.Name}.dll"), $"BepInEx/plugins/{mod.Item1.Name}-{mod.Item2}.dll");
                     }
                 }
-                Plugin.SendMessage("Done installing mods, make sure to restart to apply changes.", Plugin.modInstance);
-                if (restart && anyModsUpdated) restartGame();
+                Plugin.SendMessage("Done installing mods, run /update restart to apply changes.", Plugin.modInstance);
             } else if (outdatedMods.Any(m => m.Item1.Name == modName))
             {
                 // genuine garbage code
@@ -97,8 +86,7 @@ namespace qol_core
                         client.DownloadFileAsync(new Uri($"https://github.com/{mod.Item1.Github}/releases/download/{mod.Item2}/{mod.Item1.Name}.dll"), $"BepInEx/plugins/{mod.Item1.Name}-{mod.Item2}.dll");
                     }
                 }
-                Plugin.SendMessage($"Done installing {modName}, make sure to restart to apply changes.", Plugin.modInstance);
-                if (restart) restartGame();
+                Plugin.SendMessage($"Done installing {modName}, run /update restart to apply changes.", Plugin.modInstance);
             } else
             {
                 Plugin.SendMessage($"The mod \"{modName}\" doesn't need an update, or doesn't support it.", Plugin.modInstance);
