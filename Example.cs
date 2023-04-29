@@ -10,7 +10,7 @@ namespace example
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     public class Plugin : BasePlugin
     {
-        static Mod modInstance;
+        public static Mod modInstance;
 
         public override void Load()
         {

@@ -7,12 +7,14 @@ namespace qol_core
         public string Name { get; }
         public string Version { get; }
         public string Description { get; }
+        public string Github { get; }
 
-        public Mod(string name, string version, string description)
+        public Mod(string name, string version, string description, string github = "")
         {
             Name = name;
             Version = version;
             Description = description;
+            Github = github;
         }
     }
 
@@ -23,6 +25,13 @@ namespace qol_core
         public static Mod RegisterMod(string name, string version, string description)
         {
             Mod mod = new Mod(name, version, description);
+            ModList.Add(name, mod);
+            return mod;
+        }
+
+        public static Mod RegisterMod(string name, string version, string description, string github)
+        {
+            Mod mod = new Mod(name, version, description, github);
             ModList.Add(name, mod);
             return mod;
         }
