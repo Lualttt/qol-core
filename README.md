@@ -1,5 +1,10 @@
 # Quality Of Life Core
 
+### READ THIS IF YOU WANT YOUR MOD TO USE /UPDATE
+if you make a release on github make sure the tag is like "0.0.1"
+and also set that version in your .csproj, then make sure you put
+in your github username+repo when registering your mod
+
 Example.cs
 ```cs
 using BepInEx;
