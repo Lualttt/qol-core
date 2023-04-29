@@ -16,7 +16,7 @@ namespace example
         {
             Harmony.CreateAndPatchAll(typeof(Plugin));
 
-            modInstance = Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "An example mod.");
+            modInstance = Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "An example mod.", "LualtOfficial/Example");
 
             Commands.RegisterCommand("test", "test", "A test command.", modInstance, TestCommand);
 

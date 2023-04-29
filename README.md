@@ -20,7 +20,7 @@ namespace example
         {
             Harmony.CreateAndPatchAll(typeof(Plugin));
 
-            modInstance = Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "An example mod.");
+            modInstance = Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "An example mod.", "LualtOfficial/Example");
 
             Commands.RegisterCommand("test", "test", "A test command.", modInstance, TestCommand);
 
@@ -43,7 +43,11 @@ qol_core.Plugin.SendMessage("Hello, world!", modInstance);
 
 Mods
 ```cs
+// with updater
+Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "Description", "UserName/RepoName");
+// without updater
 Mods.RegisterMod(PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION, "Description");
+
 Mods.UnregisterMod(PluginInfo.PLUGIN_NAME);
 Mods.ModExists("mod-name");
 Mods.GetMod("mod-name");
