@@ -122,7 +122,8 @@ namespace qol_core
                         continue;
                     }
 
-                    needUpdates.Add(new Tuple<Mod, string>(mod, version));
+                    if (mod.Version != version)
+                        needUpdates.Add(new Tuple<Mod, string>(mod, version));
                 } else
                 {
                     Plugin.SendMessage("Something went wrong checking the version.", mod);
@@ -131,8 +132,10 @@ namespace qol_core
                 System.Threading.Thread.Sleep(50);
             }
 
-            Plugin.SendMessage("You have some unupdated mods.", Plugin.modInstance);
+            if (needUpdates.Count == 0)
+                return;
 
+            Plugin.SendMessage("You have some unupdated mods.", Plugin.modInstance);
             foreach(Tuple<Mod, string> mod in needUpdates)
             {
                 Plugin.SendMessage($"{mod.Item1.Version} -> {mod.Item2}", mod.Item1);
