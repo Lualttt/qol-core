@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Diagnostics;
+using UnityEngine;
 
 namespace qol_core
 {
@@ -18,7 +20,7 @@ namespace qol_core
         {
             if (arguments.Count == 1)
             {
-                Plugin.SendMessage("Wrong syntax use either; /update silence", Plugin.modInstance);
+                Plugin.SendMessage("Wrong syntax use either; /update [silence|restart]", Plugin.modInstance);
                 Plugin.SendMessage("or; /update install [mod|all]", Plugin.modInstance);
 
                 return true;
@@ -28,6 +30,8 @@ namespace qol_core
                 toggleSilence();
             if (arguments[1].ToLower() == "install")
                 updateMod(arguments[2]);
+            if (arguments[1].ToLower() == "restart")
+                restartGame();
 
             return true;
         }
@@ -62,7 +66,7 @@ namespace qol_core
                         client.DownloadFileAsync(new Uri($"https://github.com/{mod.Item1.Github}/releases/download/{mod.Item2}/{mod.Item1.Name}.dll"), $"BepInEx/plugins/{mod.Item1.Name}-{mod.Item2}.dll");
                     }
                 }
-                Plugin.SendMessage("Done installing mods, make sure to restart to apply changes.", Plugin.modInstance);
+                Plugin.SendMessage("Done installing mods, run /update restart to apply changes.", Plugin.modInstance);
             } else if (outdatedMods.Any(m => m.Item1.Name == modName))
             {
                 // genuine garbage code
@@ -82,7 +86,7 @@ namespace qol_core
                         client.DownloadFileAsync(new Uri($"https://github.com/{mod.Item1.Github}/releases/download/{mod.Item2}/{mod.Item1.Name}.dll"), $"BepInEx/plugins/{mod.Item1.Name}-{mod.Item2}.dll");
                     }
                 }
-                Plugin.SendMessage($"Done installing {modName}, make sure to restart to apply changes.", Plugin.modInstance);
+                Plugin.SendMessage($"Done installing {modName}, run /update restart to apply changes.", Plugin.modInstance);
             } else
             {
                 Plugin.SendMessage($"The mod \"{modName}\" doesn't need an update, or doesn't support it.", Plugin.modInstance);
@@ -142,6 +146,11 @@ namespace qol_core
             }
 
             outdatedMods = needUpdates;
+        }
+
+        static void restartGame(){
+            Process.Start("steam://run/1782210");
+            Application.Quit();
         }
     }
 }
