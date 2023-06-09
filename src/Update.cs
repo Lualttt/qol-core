@@ -26,6 +26,8 @@ namespace qol_core
                 return true;
             }
 
+            if (arguments[1].ToLower() == "check")
+                checkMods();
             if (arguments[1].ToLower() == "silence")
                 toggleSilence();
             if (arguments[1].ToLower() == "install")
@@ -93,9 +95,7 @@ namespace qol_core
             }
         }
 
-        [HarmonyPatch(typeof(GameUI), nameof(GameUI.Start))]
-        [HarmonyPrefix]
-        public static void GameUIStart(GameUI __instance)
+        public static void CheckMods()
         {
             outdatedMods = new List<Tuple<Mod, string>>();
 

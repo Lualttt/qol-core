@@ -36,7 +36,7 @@ namespace qol_core
             Commands.RegisterCommand("mods", "mods (index|mod)", "Shows a list of qol mods.", modInstance, ModsCommand);
             Commands.RegisterCommand("plugins", "plugins (index|plugins)", "Show a list of qol plugins.", modInstance, ModsCommand);
             Commands.RegisterCommand("prefix", "prefix (prefix)", "Change the prefix of all commands", modInstance, PrefixCommand);
-            Commands.RegisterCommand("update", "update [install|silence|restart] [install -> mod|all]", "Update your qol mods.", modInstance, Update.UpdateCommand);
+            Commands.RegisterCommand("update", "update [check|install|silence|restart] [install -> mod|all]", "Update your qol mods.", modInstance, Update.UpdateCommand);
 
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
