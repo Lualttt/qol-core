@@ -95,7 +95,7 @@ namespace qol_core
             }
         }
 
-        public static void CheckMods()
+        public static void checkMods()
         {
             outdatedMods = new List<Tuple<Mod, string>>();
 
